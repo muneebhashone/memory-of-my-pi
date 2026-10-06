@@ -35,6 +35,17 @@
   .brand .meta { margin-top: 12px; color: var(--coal-muted); font-size: 11.5px; line-height: 1.7; }
   .brand .meta b { color: var(--coal-ink); font-weight: 600; }
 
+  .actions { padding: 18px 26px 4px; display: flex; align-items: center; gap: 14px; }
+  .copybtn { flex: 1; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; cursor: pointer; font-family: var(--sans); font-size: 12.5px; font-weight: 600; letter-spacing: .01em; color: var(--coal-ink); background: #ffffff10; border: 1px solid #ffffff26; border-radius: 4px; padding: 9px 12px; transition: background .15s, border-color .15s, color .15s; }
+  .copybtn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .copybtn.ok { background: #2f7d4f; border-color: #2f7d4f; color: #fff; }
+  .copybtn .cbsize { font-weight: 400; color: #9a9791; font-variant-numeric: tabular-nums; }
+  .copybtn:hover .cbsize, .copybtn.ok .cbsize { color: #ffffffcc; }
+  .copylink { font-size: 11.5px; color: var(--coal-muted); text-decoration: none; border-bottom: 1px solid #ffffff26; padding-bottom: 1px; }
+  .copylink:hover { color: var(--coal-ink); border-color: var(--accent-on-dark); }
+  .setupcard { border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 3px; padding: 20px 22px; margin: 34px 0 28px; max-width: 720px; }
+  .setupcard h3 { margin: 0 0 8px; font-family: var(--serif); font-weight: 500; font-size: 20px; }
+  .setupcard p { margin: 0 0 14px; color: var(--muted); font-size: 13px; line-height: 1.6; }
   .search { padding: 16px 26px; border-bottom: 1px solid #ffffff10; }
   .search input { width: 100%; background: transparent; border: 0; border-bottom: 1px solid #ffffff22; color: var(--coal-ink); padding: 7px 0; font-size: 13px; font-family: var(--sans); }
   .search input::placeholder { color: #a8a59f; }
@@ -109,6 +120,13 @@
     <div class="brand">
       <h1>Memory of <em>my Pi</em></h1>
       <div class="meta" id="meta"></div>
+    </div>
+    <div class="actions">
+      <button class="copybtn" id="copybtn" type="button">
+        <span class="lbl">Copy my setup</span>
+        <span class="cbsize" id="cbsize"></span>
+      </button>
+      <a class="copylink" href="setup-prompt.md" target="_blank" rel="noopener">Open prompt</a>
     </div>
     <div class="search"><input id="q" type="search" placeholder="Filter by path, note, or content" autocomplete="off"></div>
     <div class="filters" id="filters"></div>
@@ -276,13 +294,52 @@
       '<p class="lede">Every file that shapes behaviour is mirrored here, redacted where it carried secrets. Browse the tree, or search across paths, notes, and full file contents. <b>' + D.files.length + ' files, ' + fmtBytes(D.stats.totalBytes) + '.</b></p>' +
       '<div class="grid">' + cards + '</div>' +
       '<p class="hint">Press <kbd>/</kbd> to search. Click a category above the tree to narrow it. Every file has a stable link — the URL hash is the path.<br>' +
-      'Regenerate with <code>node scripts/dump-config.js &amp;&amp; node scripts/build-site.js</code>.</p>';
+      'Regenerate with <code>node scripts/dump-config.js &amp;&amp; node scripts/build-setup-prompt.js &amp;&amp; node scripts/build-site.js</code>.</p>';
     content.appendChild(d);
+    var card = document.createElement('div');
+    card.className = 'setupcard';
+    card.innerHTML = '<h3>Start a new Pi and paste one prompt</h3>' +
+      '<p>Copies a self-contained prompt (~' + Math.round((D.setupPrompt || '').length / 1024) + ' KB) that rebuilds this agent from scratch: packages, provider and model, MCP servers, system prompts, memory, skills, and the caveman extension. Paste it into a fresh Pi session.</p>';
+    d.insertBefore(card, d.querySelector('.grid'));
+    var b2 = document.createElement('button');
+    b2.className = 'copybtn';
+    b2.style.cssText = 'flex:none;width:auto;justify-content:center;gap:8px;color:#fff;background:var(--accent);border-color:var(--accent);padding:10px 16px;font-size:13px';
+    b2.innerHTML = '<span class="lbl2">Copy my setup</span>';
+    b2.onclick = function () { copySetup(b2.querySelector('.lbl2')); };
+    card.appendChild(b2);
   }
 
   function fmtBytes(n) { return n < 1024 ? n + ' B' : n < 1048576 ? (n / 1024).toFixed(1) + ' KB' : (n / 1048576).toFixed(2) + ' MB'; }
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function escAttr(s) { return esc(s); }
+
+  function copySetup(labelEl) {
+    var t = D.setupPrompt || '';
+    if (!t) return;
+    function done(ok) {
+      var prev = labelEl.textContent;
+      labelEl.textContent = ok ? 'Copied ✓' : 'Copy failed — use Open prompt';
+      var btn = labelEl.closest('.copybtn');
+      if (btn) btn.classList.add(ok ? 'ok' : '');
+      setTimeout(function () { labelEl.textContent = prev; if (btn) btn.classList.remove('ok'); }, 2400);
+    }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = t; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, t.length);
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta); done(ok);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function () { done(true); }, fallback);
+    } else fallback();
+  }
+  var cbtn = document.getElementById('copybtn');
+  if (cbtn) {
+    var sz = document.getElementById('cbsize');
+    if (sz) sz.textContent = D.setupPrompt ? Math.round(D.setupPrompt.length / 1024) + ' KB' : 'unavailable';
+    cbtn.onclick = function () { copySetup(cbtn.querySelector('.lbl')); };
+  }
 
   var q = document.getElementById('q');
   q.addEventListener('input', function () { state.q = q.value.trim(); renderTree(); });

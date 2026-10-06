@@ -40,8 +40,17 @@ Captured files that were actually modified are flagged `redacted` in `manifest.j
 ## Regenerate
 
 ```sh
-node scripts/dump-config.js   # live config  -> dump/
-node scripts/build-site.js    # dump/        -> index.html + site-data.js
+node scripts/dump-config.js         # live config -> dump/
+node scripts/build-setup-prompt.js  # dump/       -> setup-prompt.md
+node scripts/build-site.js          # dump/       -> index.html + site-data.js
 ```
 
 Then open `index.html`.
+
+## Replicate the setup on another machine
+
+`setup-prompt.md` is a self-contained prompt generated from this dump. Open the
+artifact and press **Copy my setup**, then paste it into a fresh Pi session. It
+installs the packages, writes the core config, model and MCP settings, system
+prompts, memory, and skills, and re-enables the caveman extension. Secrets are
+replaced with `<YOUR_…>` placeholders you fill in.
