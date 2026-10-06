@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T21:52:03.903Z",
+  "generatedAt": "2026-10-06T21:56:26.532Z",
   "host": {
     "platform": "win32",
     "node": "v24.21.0",
@@ -99,8 +99,8 @@
       "path": "agent/memory/failures.md",
       "category": "Memory",
       "source": ".pi/agent/pi-hermes-memory/failures.md",
-      "size": 11380,
-      "sha256": "4983ab7217a7e7e6",
+      "size": 20564,
+      "sha256": "d6458c954ae3ffb2",
       "redacted": true,
       "ext": "md",
       "description": "Recorded failures, corrections, and tool quirks."
@@ -110,8 +110,8 @@
       "path": "agent/memory/MEMORY.md",
       "category": "Memory",
       "source": ".pi/agent/pi-hermes-memory/MEMORY.md",
-      "size": 4033,
-      "sha256": "09601692a33db495",
+      "size": 5682,
+      "sha256": "574bc0b387c34252",
       "redacted": true,
       "ext": "md",
       "description": "Global durable agent memory."
@@ -2756,7 +2756,7 @@
     {
       "name": "Memory",
       "files": 7,
-      "bytes": 28912
+      "bytes": 39745
     },
     {
       "name": "Packages",
@@ -2781,7 +2781,7 @@
   ],
   "stats": {
     "totalFiles": 263,
-    "totalBytes": 1765782,
+    "totalBytes": 1776615,
     "redactedFiles": 14
   }
 }

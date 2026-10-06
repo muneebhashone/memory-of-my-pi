@@ -35,9 +35,10 @@ const PII_PATTERNS = [
   { re: new RegExp('/(?:c|mnt)/Users/' + escapeRe(PII_USERNAME), 'gi'), to: '~' },
   { re: new RegExp('/Users/' + escapeRe(PII_USERNAME), 'g'), to: '~' },
   // The bare account name anywhere else (memory notes, prose, paths).
-  { re: new RegExp('\\b' + escapeRe(PII_USERNAME) + '\\b', 'g'), to: '<user>' },
   // Email addresses, keeping documentation placeholders intact.
   { re: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, to: (m) => (PII_EMAIL_ALLOW.test(m) ? m : '<email>') },
+  { re: /<user>@[A-Za-z0-9.-]+/g, to: '<email>' },
+  { re: new RegExp('\\b' + escapeRe(PII_USERNAME) + '\\b', 'g'), to: '<user>' },
   // Public git/GitHub handle used as the commit identity.
   { re: /\bmuneebhashone\b/gi, to: '<github-handle>' }
 ];
