@@ -2,9 +2,9 @@
 
 A point-in-time snapshot of everything that turns a stock [Pi](https://github.com/earendil-works/pi) coding-agent install into **this** agent — plus a browsable HTML artifact for reading it.
 
-Open **`index.html`** in a browser. No server needed; it works straight over `file://`.
+Open **`index.html`** in a browser. No server, no build step: it works straight over `file://`.
 
-## What's here
+## What's inside
 
 | Path | Purpose |
 | --- | --- |
@@ -13,9 +13,11 @@ Open **`index.html`** in a browser. No server needed; it works straight over `fi
 | `dump/manifest.json` | Machine-readable index: every captured file, its source, size, sha256, redaction flag. |
 | `dump/files/**` | Redacted mirror of the captured files, laid out by category. |
 | `scripts/dump-config.js` | Rebuilds `dump/` from the live config. |
+| `scripts/build-setup-prompt.js` | Rebuilds `setup-prompt.md` from `dump/`. |
 | `scripts/build-site.js` | Rebuilds `index.html` + `site-data.js` from `dump/`. |
+| `setup-prompt.md` | Self-contained prompt that recreates this setup in a fresh Pi session. |
 
-## What gets captured
+## Capture scope
 
 Read from `~/.pi/agent` (and `~/.agents`, for external skills):
 
@@ -27,17 +29,31 @@ Read from `~/.pi/agent` (and `~/.agents`, for external skills):
 
 **Not captured:** the Pi runtime itself (install tree, upstream docs), session transcripts, SQLite databases, `node_modules` bodies, binaries, images, and files larger than 512 KB.
 
-## Secrets
+## Redaction
 
-Everything is passed through a redactor before it lands in `dump/`:
+Secrets never make it into the dump:
 
 - JSON values whose key looks secret (`apiKey`, `token`, `secret`, `password`, `authorization`, …) become `***REDACTED***`.
 - Known token formats (`sk-…`, `ghp_…`, `AIza…`, JWTs, …) are scrubbed from text.
 - Environment-variable references like `$DEEPSEEK_API_KEY` are preserved as-is.
 
-Captured files that were actually modified are flagged `redacted` in `manifest.json` and shown with a badge in the UI. Verify before publishing this repo anywhere public.
+The manifest records which files were redacted.
+
+## Browse the artifact
+
+```sh
+# macOS / Linux
+open index.html
+
+# Windows
+start index.html
+```
+
+Then use the tree and search box to read any captured file with its original path and size.
 
 ## Regenerate
+
+From the repository root, with the live Pi config in place:
 
 ```sh
 node scripts/dump-config.js         # live config -> dump/
@@ -45,12 +61,18 @@ node scripts/build-setup-prompt.js  # dump/       -> setup-prompt.md
 node scripts/build-site.js          # dump/       -> index.html + site-data.js
 ```
 
-Then open `index.html`.
+Commit the result to take a new snapshot. `index.html` and `site-data.js` are generated — edit the scripts, not the generated files.
 
-## Replicate the setup on another machine
+## Restore into a fresh Pi
 
-`setup-prompt.md` is a self-contained prompt generated from this dump. Open the
-artifact and press **Copy my setup**, then paste it into a fresh Pi session. It
-installs the packages, writes the core config, model and MCP settings, system
-prompts, memory, and skills, and re-enables the caveman extension. Secrets are
-replaced with `<YOUR_…>` placeholders you fill in.
+`setup-prompt.md` is a self-contained prompt generated from this dump. Open the artifact, press **Copy my setup**, then paste it into a fresh Pi session. It installs the packages and writes the core config, model and MCP settings, system prompts, memory, and skills. Secrets are replaced with `<YOUR_…>` placeholders you fill in.
+
+## Requirements
+
+- [Node.js](https://nodejs.org/) 18+ (tested on v24) for the three scripts.
+- A browser for `index.html`.
+- No npm dependencies.
+
+## License
+
+[MIT](LICENSE)
