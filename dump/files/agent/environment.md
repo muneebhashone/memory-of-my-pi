@@ -14,5 +14,5 @@ Secret-looking values are redacted.
 | `PI_MODEL` | `deepseek-flash` |
 | `PI_PROVIDER` | `deepseek-v1` |
 | `PI_REASONING_LEVEL` | `low` |
-| `PI_SESSION_FILE` | `~\.pi\agent\sessions\--C--Users-<user>-repos-memory-of-my-pi--\2026-10-06T21-20-22-891Z_01a11316-c96b-74f2-8899-4033ce30a133.jsonl` |
-| `PI_SESSION_ID` | `01a11316-c96b-74f2-8899-4033ce30a133` |
+| `PI_SESSION_FILE` | `~\.pi\agent\sessions\--C--Users-<user>--\2026-10-06T21-40-40-971Z_01a11329-5f8b-7205-ac26-fde6f86fbf9c.jsonl` |
+| `PI_SESSION_ID` | `01a11329-5f8b-7205-ac26-fde6f86fbf9c` |

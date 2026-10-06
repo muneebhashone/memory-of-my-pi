@@ -8,7 +8,8 @@
     "npm:pi-subagents",
     "npm:pi-hermes-memory",
     "npm:pi-ultracode@latest",
-    "npm:pi-background-tasks@latest"
+    "npm:pi-background-tasks@latest",
+    "npm:@juicesharp/rpiv-todo"
   ],
   "skills": [
     "~/.pi/agent/vendor/mattpocock-skills/skills/engineering",

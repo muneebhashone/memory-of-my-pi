@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T21:30:40.158Z",
+  "generatedAt": "2026-10-06T21:47:15.130Z",
   "host": {
     "platform": "win32",
     "node": "v24.21.0",
@@ -52,11 +52,11 @@
       "description": "Provider auth store. Secrets redacted."
     },
     {
-      "id": "f0259",
+      "id": "f0263",
       "path": "agent/environment.md",
       "category": "Core Config",
       "source": "generated",
-      "size": 878,
+      "size": 856,
       "sha256": "generated",
       "redacted": true,
       "ext": "md",
@@ -99,8 +99,8 @@
       "path": "agent/memory/failures.md",
       "category": "Memory",
       "source": ".pi/agent/pi-hermes-memory/failures.md",
-      "size": 4115,
-      "sha256": "1f5adb3e1cc24912",
+      "size": 7927,
+      "sha256": "5b1da0b68569fddd",
       "redacted": false,
       "ext": "md",
       "description": "Recorded failures, corrections, and tool quirks."
@@ -110,8 +110,8 @@
       "path": "agent/memory/MEMORY.md",
       "category": "Memory",
       "source": ".pi/agent/pi-hermes-memory/MEMORY.md",
-      "size": 1992,
-      "sha256": "862027f91b100a37",
+      "size": 2672,
+      "sha256": "a68eafec1337168e",
       "redacted": false,
       "ext": "md",
       "description": "Global durable agent memory."
@@ -150,29 +150,51 @@
       "description": "Custom provider + model definitions (DeepSeek V4)."
     },
     {
-      "id": "f0247",
+      "id": "f0249",
       "path": "agent/npm/package-lock.json",
       "category": "Packages",
       "source": ".pi/agent/npm/package-lock.json",
-      "size": 36767,
-      "sha256": "fe0ae0e5b8a16abb",
+      "size": 37915,
+      "sha256": "e7f75f8a79d75cb7",
       "redacted": true,
       "ext": "json",
       "description": "Locked dependency tree."
     },
     {
-      "id": "f0246",
+      "id": "f0248",
       "path": "agent/npm/package.json",
       "category": "Packages",
       "source": ".pi/agent/npm/package.json",
-      "size": 242,
-      "sha256": "66c2ed80629f4eff",
+      "size": 282,
+      "sha256": "05bf7960f2ca8531",
       "redacted": false,
       "ext": "json",
       "description": "Installed Pi extensions/packages and versions."
     },
     {
-      "id": "f0249",
+      "id": "f0251",
+      "path": "agent/npm/packages/@juicesharp/rpiv-todo/package.json",
+      "category": "Packages",
+      "source": ".pi/agent/npm/node_modules/@juicesharp/rpiv-todo/package.json",
+      "size": 1668,
+      "sha256": "6405e1b226ff6cee",
+      "redacted": false,
+      "ext": "json",
+      "description": "Installed extension @juicesharp/rpiv-todo — package.json"
+    },
+    {
+      "id": "f0252",
+      "path": "agent/npm/packages/@juicesharp/rpiv-todo/README.md",
+      "category": "Packages",
+      "source": ".pi/agent/npm/node_modules/@juicesharp/rpiv-todo/README.md",
+      "size": 5972,
+      "sha256": "6cf80812ff9ae1b9",
+      "redacted": false,
+      "ext": "md",
+      "description": "Installed extension @juicesharp/rpiv-todo — README.md"
+    },
+    {
+      "id": "f0253",
       "path": "agent/npm/packages/billion-context/package.json",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/billion-context/package.json",
@@ -183,7 +205,7 @@
       "description": "Installed extension billion-context — package.json"
     },
     {
-      "id": "f0250",
+      "id": "f0254",
       "path": "agent/npm/packages/billion-context/README.md",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/billion-context/README.md",
@@ -194,7 +216,7 @@
       "description": "Installed extension billion-context — README.md"
     },
     {
-      "id": "f0251",
+      "id": "f0255",
       "path": "agent/npm/packages/pi-background-tasks/package.json",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/pi-background-tasks/package.json",
@@ -205,7 +227,7 @@
       "description": "Installed extension pi-background-tasks — package.json"
     },
     {
-      "id": "f0252",
+      "id": "f0256",
       "path": "agent/npm/packages/pi-background-tasks/README.md",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/pi-background-tasks/README.md",
@@ -216,7 +238,7 @@
       "description": "Installed extension pi-background-tasks — README.md"
     },
     {
-      "id": "f0253",
+      "id": "f0257",
       "path": "agent/npm/packages/pi-hermes-memory/package.json",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/pi-hermes-memory/package.json",
@@ -227,7 +249,7 @@
       "description": "Installed extension pi-hermes-memory — package.json"
     },
     {
-      "id": "f0254",
+      "id": "f0258",
       "path": "agent/npm/packages/pi-hermes-memory/README.md",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/pi-hermes-memory/README.md",
@@ -238,7 +260,7 @@
       "description": "Installed extension pi-hermes-memory — README.md"
     },
     {
-      "id": "f0255",
+      "id": "f0259",
       "path": "agent/npm/packages/pi-subagents/package.json",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/pi-subagents/package.json",
@@ -249,7 +271,7 @@
       "description": "Installed extension pi-subagents — package.json"
     },
     {
-      "id": "f0256",
+      "id": "f0260",
       "path": "agent/npm/packages/pi-subagents/README.md",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/pi-subagents/README.md",
@@ -260,7 +282,7 @@
       "description": "Installed extension pi-subagents — README.md"
     },
     {
-      "id": "f0257",
+      "id": "f0261",
       "path": "agent/npm/packages/pi-ultracode/package.json",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/pi-ultracode/package.json",
@@ -271,7 +293,7 @@
       "description": "Installed extension pi-ultracode — package.json"
     },
     {
-      "id": "f0258",
+      "id": "f0262",
       "path": "agent/npm/packages/pi-ultracode/README.md",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/pi-ultracode/README.md",
@@ -282,7 +304,7 @@
       "description": "Installed extension pi-ultracode — README.md"
     },
     {
-      "id": "f0248",
+      "id": "f0250",
       "path": "agent/pi-subagents/last-seen-version.json",
       "category": "Packages",
       "source": ".pi/agent/pi-subagents/last-seen-version.json",
@@ -313,12 +335,33 @@
       "description": "Per-project memory: agent/projects-memory/agent-playbook/MEMORY.md"
     },
     {
+      "id": "f0246",
+      "path": "agent/projects-memory/memory-of-my-pi/.MEMORY.md.recovery-1791322385522-8466762b-afb1-413e-b9ec-e7027a7c2d10",
+      "category": "Memory",
+      "source": ".pi/agent/projects-memory/memory-of-my-pi/.MEMORY.md.recovery-1791322385522-8466762b-afb1-413e-b9ec-e7027a7c2d10",
+      "size": 863,
+      "sha256": "405f16bbb1ba8c2b",
+      "redacted": false,
+      "ext": "recovery-1791322385522-8466762b-afb1-413e-b9ec-e7027a7c2d10"
+    },
+    {
+      "id": "f0247",
+      "path": "agent/projects-memory/memory-of-my-pi/MEMORY.md",
+      "category": "Memory",
+      "source": ".pi/agent/projects-memory/memory-of-my-pi/MEMORY.md",
+      "size": 4942,
+      "sha256": "3e7348d7db7e8ebd",
+      "redacted": false,
+      "ext": "md",
+      "description": "Per-project memory: agent/projects-memory/memory-of-my-pi/MEMORY.md"
+    },
+    {
       "id": "f0001",
       "path": "agent/settings.json",
       "category": "Core Config",
       "source": ".pi/agent/settings.json",
-      "size": 605,
-      "sha256": "d5d3656ecc9a890e",
+      "size": 638,
+      "sha256": "54e8f38aa04e5521",
       "redacted": false,
       "ext": "json",
       "description": "Default provider/model, installed packages, skill paths, thinking level."
@@ -2703,7 +2746,7 @@
     {
       "name": "Core Config",
       "files": 11,
-      "bytes": 36145
+      "bytes": 36156
     },
     {
       "name": "Extensions",
@@ -2712,13 +2755,13 @@
     },
     {
       "name": "Memory",
-      "files": 5,
-      "bytes": 13517
+      "files": 7,
+      "bytes": 23814
     },
     {
       "name": "Packages",
-      "files": 13,
-      "bytes": 204332
+      "files": 15,
+      "bytes": 213160
     },
     {
       "name": "Skills (external)",
@@ -2737,8 +2780,8 @@
     }
   ],
   "stats": {
-    "totalFiles": 259,
-    "totalBytes": 1741661,
+    "totalFiles": 263,
+    "totalBytes": 1760797,
     "redactedFiles": 3
   }
 }

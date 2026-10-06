@@ -27,6 +27,7 @@ pi install npm:pi-subagents
 pi install npm:pi-hermes-memory
 pi install npm:pi-ultracode@latest
 pi install npm:pi-background-tasks@latest
+pi install npm:@juicesharp/rpiv-todo
 ```
 
 Then confirm they appear in `~/.pi/agent/settings.json` under `packages`:
@@ -38,7 +39,8 @@ Then confirm they appear in `~/.pi/agent/settings.json` under `packages`:
   "npm:pi-subagents",
   "npm:pi-hermes-memory",
   "npm:pi-ultracode@latest",
-  "npm:pi-background-tasks@latest"
+  "npm:pi-background-tasks@latest",
+  "npm:@juicesharp/rpiv-todo"
 ]
 ```
 
@@ -63,7 +65,8 @@ Default provider and model: **deepseek-v1 / deepseek-flash**, thinking level **l
     "npm:pi-subagents",
     "npm:pi-hermes-memory",
     "npm:pi-ultracode@latest",
-    "npm:pi-background-tasks@latest"
+    "npm:pi-background-tasks@latest",
+    "npm:@juicesharp/rpiv-todo"
   ],
   "skills": [
     "~/.pi/agent/vendor/mattpocock-skills/skills/engineering",
@@ -295,6 +298,8 @@ Global git identity/config on <user>'s machine (set Oct 2026): user.name=muneebh
 Pi packages installed 2026-10-07 into ~/.pi/agent: npm:pi-background-tasks@latest and npm:pi-ultracode@latest (pi-dynamic-workflows intentionally skipped — prototype superseded by ultracode's durable workflow). Background-tasks tuned via User env vars (setx): PI_BG_FEATURES=process,fusion (dropped delegate=overlaps pi-subagents, attested=niche, attribution=no Anthropic OAuth) and PI_BG_DOCK_SHORTCUT=ctrl+alt+b (avoids stealing Pi's Shift+Down). Ultracode needs no env config; it reads no env vars and its Jev/typesafe.ai classifier is inactive (no typesafe credentials) so no metadata leaves the machine. Install ran in parallel once and the settings.json write raced — install these sequentially. better-sqlite3 install-script warning is harmless on win32-x64 (prebuild present). <!-- created=2026-10-06, last=2026-10-06 -->
 §
 Impeccable (github.com/pbakaus/impeccable) design skill installed globally for Pi on 2026 (Windows): `npx impeccable install --providers=pi --scope=global` → ~\.pi\agent\skills\impeccable (SKILL.md v4.5.0, engine binary scripts/bin/windows-x64/impeccable.exe). Update with `npx impeccable update`. Pi has no hook surface, so no hook manifest is installed. Providers list from scripts/lib/transformers/providers.js includes pi, claude, codex, cursor, gemini, github, grok, hermes, opencode, dsh, vibe, kiro, qoder, trae, antigravity, agents, veto. <!-- created=2026-10-06, last=2026-10-06 -->
+§
+Pi setup sync rule (user directive, 2026-10-07): Whenever the user asks to change the Pi setup — install/add/remove a skill, MCP server, extension, package, model, provider, memory file, or any config under ~/.pi/agent or ~/.agents — do BOTH: (1) actually perform the setup change, then (2) update the snapshot repo ~/repos/memory-of-my-pi to match. To update: `node scripts/dump-config.js && node scripts/build-setup-prompt.js && node scripts/build-site.js`, then `git add -A && git commit`. Keep index.html, site-data.js, setup-prompt.md, and dump/ in sync. Do not leave the repo stale after a setup change. <!-- created=2026-10-06, last=2026-10-06 -->
 ```
 
 ### `~/.pi/agent/memory/USER.md`
@@ -339,6 +344,20 @@ User prefers the `npx skills add` ecosystem / vercel-labs/skills universal `.age
 [tool-quirk] Windows bash (Git Bash) chokes on backticks inside double-quoted curl/grep commands: 'unexpected EOF while looking for matching ``'. Avoid embedding backticks in shell one-liners; prefer grepping simpler patterns. <!-- created=2026-10-06, last=2026-10-06, project64=YWdlbnQtcGxheWJvb2s -->
 §
 [tool-quirk] In Pi sessions with the caveman-native extension active, large tool outputs (bash, read) get replaced by a ccr:// handle and retrieval can drop lines ("non-adjacent"). Workaround: keep each tool output under ~1KB (slice/head), or run a node one-liner that prints only the needed few chars, or write output to a file and read in bounded chunks. Don't trust large tool outputs shown after compression; verify file contents with node JSON.parse/readFileSync. — Failed: Caveman compression silently substitutes tool results, so .output may be undefined and content may be lossy. <!-- created=2026-10-06, last=2026-10-06 -->
+§
+[tool-quirk] In this Pi environment, several patterns silently break: (1) writing to /tmp then reading it maps to C:\tmp\... and fails with ENOENT 'no such file or directory, open C:\tmp\...' — write temp files into the repo dir instead; (2) a bash-style path like /c/Users/... passed to Node fs resolves to C:\c\Users\... and ENOENTs — use C:/ or C:\ paths in Node; (3) chained tool invocations sometimes return 'undefined' or 'Script error: TypeError: not a function at <anonymous> (codemode.js:2:37)' with no tool calls made. <!-- created=2026-10-06, last=2026-10-06, project64=bWVtb3J5LW9mLW15LXBp -->
+§
+[insight] Bulk-dumping ~/.pi/agent snapshots many files that merely LOOK secret-bearing: name/pattern-based redaction flagged 54-55 files, but a value-pattern pass cut it to 3 genuine hits — mcp.json x-api-key, DEEPSEEK_API_KEY in models.json (as $DEEPSEEK_API_KEY). Prefer matching credential VALUE patterns (sk-, long hex, key prefixes) over keyword matching on path/filename. <!-- created=2026-10-06, last=2026-10-06, project64=bWVtb3J5LW9mLW15LXBp -->
+§
+[tool-quirk] On this Windows machine, bash-style absolute paths that look POSIX (/tmp/x, /c/Users/...) get mangled when passed to Node child_process/file APIs by the harness: '/tmp/impecc.txt' became 'C:\\tmp\\impecc.txt' and '/c/Users/.../SKILL.md' became 'C:\\c\\Users\\...' → ENOENT. Write scratch output with relative paths (or a file then read it), not /tmp or /c/ paths, when the value flows into Node fs calls. — Failed: Repeated ENOENT errors reading files written via /tmp and /c/... paths in Node <!-- created=2026-10-06, last=2026-10-06, project64=bWVtb3J5LW9mLW15LXBp -->
+§
+[insight] Redaction/setup-dump nuance for memory-of-my-pi: naive secret redaction over-matched (redacted 54-55 files: e.g. every agent/npm/packages/* leaf, install manifests) because broad patterns hit benign names. Narrowing to real KeyName=Value secrets dropped it to 3-4 redacted files (agent/mcp.json, agent/npm/package-lock.json, one packages/js-beautify/package.json). For the setup-prompt, the user's goal REQUIRES keeping real credentials (e.g. DEEPSEEK_API_KEY) so a pasted prompt reproduces the working setup — do not redact in setup-prompt.md even though dump/ redacts. <!-- created=2026-10-06, last=2026-10-06, project64=bWVtb3J5LW9mLW15LXBp -->
+§
+[tool-quirk] memory-of-my-pi index.html: .md file viewer rendered line numbers but no content. Root cause: the `.gutter` CSS had no `white-space: pre`, so line numbers rendered inline, gutter expanded to full file width and pushed the code body off-screen (small files hid the bug). Fix (commit 74be1aa): `.gutter { white-space: pre; line-height: inherit }` in scripts/build-site.js. <!-- created=2026-10-06, last=2026-10-06, project64=bWVtb3J5LW9mLW15LXBp -->
+§
+[tool-quirk] impeccable skill usage gotcha: reading a file by a path like `~/.pi/agent/skills/impeccable/SKILL.md` inside node/bash can resolve as `C:\c\Users\...` (POSIX-absolute path prefixed to the drive) → ENOENT. Same for writing to `/tmp/...` on this Windows bash: it resolves to `C:\tmp\...`. Prefer relative paths from the repo cwd when reading/writing files in scripts. <!-- created=2026-10-06, last=2026-10-06, project64=bWVtb3J5LW9mLW15LXBp -->
+§
+[preference] User rejected the first memory-of-my-pi version as 'to exaggerated and too much detail' — scope must be ONLY the user's Pi setup (skills, system prompts, MCP, extensions, packages, memory, config), NOT Pi runtime docs/install or transitive package deps. Also: use the globally installed impeccable skill to make the HTML artifact aesthetic, then run the impeccable mechanical detector over the built index.html and clear all findings to count 0. <!-- created=2026-10-06, last=2026-10-06, project64=bWVtb3J5LW9mLW15LXBp -->
 ```
 
 ### `~/.pi/agent/projects-memory/agent-playbook/MEMORY.md`
@@ -363,6 +382,23 @@ agent-playbook README.md was rewritten (commit 1812b7a 'docs: rewrite README for
 agent-playbook build/verify workflow: npm run build (next build, Turbopack) and npm run lint (eslint, exit 0) must pass; local verification can run `npm run start` then curl http://localhost:3000/setup/pi.md and /setup/skills.md to check generated docs. Type checking via npx tsc --noEmit (note: bare `npx tsc` installs the wrong tsc@2.0.4 package — use ./node_modules/.bin/tsc). LayoutProps and RouteContext are Next.js 16 ambient route types; eslint/typescript errors about them are pre-existing, not real failures. <!-- created=2026-10-06, last=2026-10-06 -->
 §
 agent-playbook skills.ts SkillPack type now: { id, name, repo, about, claude: string[], codex: string[], pi: string[], afterInstall?: { claude?, codex?, pi? } }. Skill packs caveman and impeccable cover all three targets. buildSkillsDoc emits a `**Pi**` block per pack; Pi installs use `.pi/` (project skills dir), `~/.agents/skills`, or `.agents/skills`, plus `npx skills add` / `pi install`. Intro notes mention `/skill:<name>` and restart-then-run fallback. This org-level detail is also recorded in project memory. <!-- created=2026-10-06, last=2026-10-06 -->
+```
+
+### `~/.pi/agent/projects-memory/memory-of-my-pi/MEMORY.md`
+
+```md
+memory-of-my-pi repo (~\repos\memory-of-my-pi): dumps the live Pi agent setup into a browsable offline HTML artifact. Purpose (m00001): let the user see what actually goes into 'becoming' their Pi so it can be replicated. Committed at 5237ff6 'Trim dump to agent setup only and redesign the browser' (prior commit 6b5eda0 'Snapshot Pi agent configuration with browsable HTML dump'). Layout: README.md, scripts/dump-config.js, scripts/build-site.js, index.html, site-data.js, dump/. dump/ holds 259 files / 1.66 MB — Core Config 11, Extensions 1, Memory 5, Packages 13, Skills (external) 14, Skills (local) 55, Skills (vendored) 160. index.html works over file://, no server: sidebar tree, category filters, full-content search ('/'), line-numbered viewer, sha256 + redaction badge, hash deep-links. <!-- created=2026-10-06, last=2026-10-06 -->
+§
+memory-of-my-pi scope rule (user correction, m00237): include ONLY the user's Pi setup — NOT Pi itself. The first version was 'to exaggerated and too much detail'; Pi runtime docs/install and transitive package deps were dropped. Design should be aesthetic — use the globally installed impeccable skill. Impeccable detector on index.html required fixing: low-contrast #bd4522 on #121317 (3.6:1, needs 4.5:1), placeholder #6f6d69 on #121317, overused-font 'inter', kicker-above-heading. All cleared to count 0 after edits. <!-- created=2026-10-06, last=2026-10-06 -->
+§
+memory-of-my-pi setup-prompt feature (user goal, m00250-ish): repo must ship a 'Copy my setup' button in index.html that copies a single prompt the user can paste into their own Pi agent to replicate the ENTIRE setup — skills, system prompts, MCP, extensions, context, everything — on another machine with one prompt. Implemented as scripts/build-setup-prompt.js → setup-prompt.md (~30.9 KB, 8 installs, real secret key included via dump so paste-ready). Rebuild pipeline: scripts/dump-config.js → dump/manifest.json → scripts/build-site.js → index.html + site-data.js + setup-prompt.md. Site renders md files from dump; line-number gutter needs `.gutter { white-space: pre; line-height: inherit }` or numbers render inline and push content off-screen (fix commit 74be1aa). <!-- created=2026-10-06, last=2026-10-06 -->
+§
+memory-of-my-pi sync rule (user directive, 2026-10-07): Whenever the user asks to change the Pi setup — install/add/remove a skill, MCP server, extension, package, model, provider, memory file, or any config under ~/.pi/agent or ~/.agents — do BOTH: (1) actually perform the setup change, then (2) update the snapshot repo ~/repos/memory-of-my-pi to match. To update: `node scripts/dump-config.js && node scripts/build-setup-prompt.js && node scripts/build-site.js`, then `git add -A && git commit`. Keep index.html, site-data.js, setup-prompt.md, and dump/ in sync. Do not leave the repo stale after a setup change. <!-- created=2026-10-06, last=2026-10-06 -->
+§
+memory-of-my-pi setup-prompt ('Copy my setup') delivered in commit 0fcf9fd. scripts/build-setup-prompt.js generates setup-prompt.md (~30 KB, 8 installs, real secret key resolvable, verified byte-exact, 24 balanced fences) from the dump. index.html has the button in two places (sidebar 'Copy my setup · 30 KB' and an overview card) using Clipboard API + execCommand fallback so it works over file://; plus an 'Open prompt' link. site-data.js carries setupPrompt. <!-- created=2026-10-06, last=2026-10-06 -->
+§
+memory-of-my-pi dump contents detail (259 files / 1.66 MB): Core Config 11 (settings.json, models.json, models-store.json, mcp.json, mcp-auth.json, auth.json, AGENTS.md + .bak, APPEND_SYSTEM.md, environment.md), Extensions 1 (caveman-native.js), Memory 5 (memory/MEMORY.md, USER.md, failures.md + recovery copies, projects-memory/agent-playbook/MEMORY.md), Packages 13, Skills (external) 14 (external/agents-skills/unity-cli), Skills (local) 55 (agent/skills/impeccable → 55 files / 505 KB, content 401 KB), Skills (vendored) 160 (caveman 54 files under agent/vendor/caveman/skills, mattpocock-skills 106 under agent/vendor/mattpocock-skills/skills). Live package set (pi-extensions npm deps): billion-context ^0.1.186, pi-background-tasks ^2.6.9, pi-hermes-memory ^0.9.10, pi-subagents ^0.76.1, pi-ultracode ^0.10.4. Pi version 1.0.4. settings.json packages: git:github.com/DietrichGebert/ponytail, npm:billion-context, npm:pi-subagents, npm:pi-hermes-memory, npm:pi-ultracode@latest, npm:pi-background-tasks@latest. mcp.json servers: exa (https://mcp.exa.ai/mcp, x-api-key) and chrome-devtools (npx chrome-devtools-mcp@latest --no-usage-statistics). Redaction policy: secret-looking JSON keys → ***REDACTED***, known token formats scrubbed, $ENV_VAR refs preserved.
+Open objectives: none — all delivered (final repo state committed clean; user's last requests handled: rule saved to both project and global memory). <!-- created=2026-10-06, last=2026-10-06 -->
 ```
 
 ---
@@ -482,7 +518,7 @@ would double-register.
 
 ## Phase 6 — Verify
 
-- [ ] `settings.json` lists all 6 packages and the skills paths.
+- [ ] `settings.json` lists all 7 packages and the skills paths.
 - [ ] Default provider/model is `deepseek-v1 / deepseek-flash`, thinking `low`.
 - [ ] `mcp.json` has working MCP servers (keys resolved).
 - [ ] `APPEND_SYSTEM.md` and `AGENTS.md` are in place.
