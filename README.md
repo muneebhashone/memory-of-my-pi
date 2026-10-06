@@ -23,11 +23,9 @@ Read from `~/.pi/agent` (and `~/.agents`, for external skills):
 - **Extensions** — native extension source loaded into Pi (`caveman-native.js`).
 - **Skills** — local (`~/.pi/agent/skills`), vendored (`vendor/caveman`, `vendor/mattpocock-skills`), and external (`~/.agents/skills`).
 - **Memory** — durable `USER.md` / `MEMORY.md` / `failures.md` and per-project memory.
-- **Packages** — installed Pi extension packages and versions (`npm/package.json`, lockfile, per-package manifests/READMEs).
-- **Install** — launchers, managed-install layout, active version.
-- **Pi Docs** — upstream documentation shipped with the runtime.
+- **Packages** — the extensions you installed (`npm/package.json`, lockfile, per-package manifests/READMEs).
 
-**Not captured:** session transcripts (`sessions/`), SQLite databases, `node_modules` bodies, binaries, images, and files larger than 512 KB.
+**Not captured:** the Pi runtime itself (install tree, upstream docs), session transcripts, SQLite databases, `node_modules` bodies, binaries, images, and files larger than 512 KB.
 
 ## Secrets
 

@@ -256,32 +256,25 @@ const captures = [
 
   { cat: 'Packages', to: 'agent/npm/package.json', from: path.join(AGENT, 'npm', 'package.json'), file: true, describe: () => 'Installed Pi extensions/packages and versions.' },
   { cat: 'Packages', to: 'agent/npm/package-lock.json', from: path.join(AGENT, 'npm', 'package-lock.json'), file: true, maxBytes: 900 * 1024, describe: () => 'Locked dependency tree.' },
-  { cat: 'Packages', to: 'agent/pi-subagents', from: path.join(AGENT, 'pi-subagents'), dir: true },
-
-  { cat: 'Install', to: 'agent/bin', from: path.join(AGENT, 'bin'), dir: true, describe: () => 'Pi launcher entrypoints.' },
-  { cat: 'Install', to: 'agent/install/managed-install.json', from: path.join(AGENT, 'install', 'managed-install.json'), file: true, describe: () => 'Managed install layout + entrypoint.' },
-  { cat: 'Install', to: 'agent/install/current-version', from: path.join(AGENT, 'install', 'current-version'), file: true, describe: () => 'Active Pi version.' }
+  { cat: 'Packages', to: 'agent/pi-subagents', from: path.join(AGENT, 'pi-subagents'), dir: true }
 ];
 
-const PI_PKG = path.join(AGENT, 'install', 'releases', '1.0.4', 'node_modules', '@earendil-works', 'pi-coding-agent');
-captures.push({ cat: 'Install', to: 'agent/install/pi-coding-agent/package.json', from: path.join(PI_PKG, 'package.json'), file: true, describe: () => 'Pi coding agent package manifest.' });
-captures.push({ cat: 'Pi Docs', to: 'pi/docs', from: path.join(PI_PKG, 'docs'), dir: true, describe: () => 'Official Pi documentation.' });
-captures.push({ cat: 'Pi Docs', to: 'pi/README.md', from: path.join(PI_PKG, 'README.md'), file: true, describe: () => 'Pi coding agent README.' });
-
-// package.json + README for each installed extension package
+// package.json + README for each directly-installed extension package only
 const NODE_MODULES = path.join(AGENT, 'npm', 'node_modules');
+let directDeps = [];
 try {
-  for (const name of fs.readdirSync(NODE_MODULES)) {
-    if (name.startsWith('.') || name.startsWith('@')) continue;
-    const pkgDir = path.join(NODE_MODULES, name);
-    for (const f of ['package.json', 'README.md']) {
-      const abs = path.join(pkgDir, f);
-      if (fs.existsSync(abs)) {
-        captures.push({ cat: 'Packages', to: `agent/npm/packages/${name}/${f}`, from: abs, file: true, describe: () => `Extension package ${name}: ${f}` });
-      }
+  const pj = JSON.parse(fs.readFileSync(path.join(AGENT, 'npm', 'package.json'), 'utf8'));
+  directDeps = Object.keys(pj.dependencies || {});
+} catch { /* no manifest */ }
+for (const name of directDeps) {
+  const pkgDir = path.join(NODE_MODULES, name);
+  for (const f of ['package.json', 'README.md']) {
+    const abs = path.join(pkgDir, f);
+    if (fs.existsSync(abs)) {
+      captures.push({ cat: 'Packages', to: `agent/npm/packages/${name}/${f}`, from: abs, file: true, describe: () => `Installed extension ${name} — ${f}` });
     }
   }
-} catch { /* no packages */ }
+}
 
 for (const c of captures) {
   const opts = {
@@ -314,22 +307,6 @@ for (const c of captures) {
     path: rel, category: 'Core Config', source: 'generated',
     size: Buffer.byteLength(text), sha256: 'generated', redacted: true, ext: 'md',
     description: 'Relevant environment variables (secret values redacted).'
-  });
-}
-
-// pi version/package details captured as a synthetic file
-const piPkgPath = path.join(PI_PKG, 'package.json');
-if (fs.existsSync(piPkgPath)) {
-  const p = JSON.parse(fs.readFileSync(piPkgPath, 'utf8'));
-  const rel = 'pi/versions.json';
-  const text = JSON.stringify({ piVersion: p.version, packageName: p.name, capturedAt: manifest.generatedAt }, null, 2);
-  ensureDir(path.join(OUT, 'files', path.dirname(rel)));
-  fs.writeFileSync(path.join(OUT, 'files', rel), text);
-  manifest.files.push({
-    id: 'f' + (++fileCounter).toString().padStart(4, '0'),
-    path: rel, category: 'Pi Docs',
-    source: 'generated', size: Buffer.byteLength(text), sha256: 'generated',
-    redacted: false, ext: 'json', description: 'Detected Pi version.'
   });
 }
 

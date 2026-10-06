@@ -1,9 +1,0 @@
-{
-    "kind":  "pi-managed-install",
-    "schemaVersion":  1,
-    "layout":  "releases-v1",
-    "entrypoint":  {
-                       "type":  "script",
-                       "path":  "~\\.pi\\agent\\bin\\pi.cmd"
-                   }
-}
