@@ -1,0 +1,49 @@
+# memory-of-my-pi
+
+A point-in-time snapshot of everything that turns a stock [Pi](https://github.com/earendil-works/pi) coding-agent install into **this** agent — plus a browsable HTML artifact for reading it.
+
+Open **`index.html`** in a browser. No server needed; it works straight over `file://`.
+
+## What's here
+
+| Path | Purpose |
+| --- | --- |
+| `index.html` | Offline navigator: category/folder tree, full-content search, per-file viewer. |
+| `site-data.js` | The embedded data `index.html` reads (`window.PI_DUMP`). |
+| `dump/manifest.json` | Machine-readable index: every captured file, its source, size, sha256, redaction flag. |
+| `dump/files/**` | Redacted mirror of the captured files, laid out by category. |
+| `scripts/dump-config.js` | Rebuilds `dump/` from the live config. |
+| `scripts/build-site.js` | Rebuilds `index.html` + `site-data.js` from `dump/`. |
+
+## What gets captured
+
+Read from `~/.pi/agent` (and `~/.agents`, for external skills):
+
+- **Core Config** — `settings.json`, `models.json`, `models-store.json`, `mcp.json`, `auth.json`, `AGENTS.md`, `APPEND_SYSTEM.md`, revisions (`.bak`), and an environment snapshot.
+- **Extensions** — native extension source loaded into Pi (`caveman-native.js`).
+- **Skills** — local (`~/.pi/agent/skills`), vendored (`vendor/caveman`, `vendor/mattpocock-skills`), and external (`~/.agents/skills`).
+- **Memory** — durable `USER.md` / `MEMORY.md` / `failures.md` and per-project memory.
+- **Packages** — installed Pi extension packages and versions (`npm/package.json`, lockfile, per-package manifests/READMEs).
+- **Install** — launchers, managed-install layout, active version.
+- **Pi Docs** — upstream documentation shipped with the runtime.
+
+**Not captured:** session transcripts (`sessions/`), SQLite databases, `node_modules` bodies, binaries, images, and files larger than 512 KB.
+
+## Secrets
+
+Everything is passed through a redactor before it lands in `dump/`:
+
+- JSON values whose key looks secret (`apiKey`, `token`, `secret`, `password`, `authorization`, …) become `***REDACTED***`.
+- Known token formats (`sk-…`, `ghp_…`, `AIza…`, JWTs, …) are scrubbed from text.
+- Environment-variable references like `$DEEPSEEK_API_KEY` are preserved as-is.
+
+Captured files that were actually modified are flagged `redacted` in `manifest.json` and shown with a badge in the UI. Verify before publishing this repo anywhere public.
+
+## Regenerate
+
+```sh
+node scripts/dump-config.js   # live config  -> dump/
+node scripts/build-site.js    # dump/        -> index.html + site-data.js
+```
+
+Then open `index.html`.

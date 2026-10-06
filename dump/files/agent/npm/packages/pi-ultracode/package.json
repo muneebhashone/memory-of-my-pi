@@ -1,0 +1,104 @@
+{
+  "name": "pi-ultracode",
+  "version": "0.10.4",
+  "description": "Adaptive semantic-depth workflow orchestration for Pi, with focused, standard, and deep modes, isolated subagents, worktree delivery, structured output, and durable resume.",
+  "keywords": [
+    "agents",
+    "orchestration",
+    "pi",
+    "pi-coding-agent",
+    "pi-package",
+    "subagents",
+    "ultracode",
+    "workflow",
+    "workflows"
+  ],
+  "homepage": "https://github.com/ekil1100/pi-ultracode#readme",
+  "bugs": {
+    "url": "https://github.com/ekil1100/pi-ultracode/issues"
+  },
+  "license": "MIT",
+  "author": "pi-ultracode",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ekil1100/pi-ultracode.git"
+  },
+  "files": [
+    "extensions/",
+    "src/",
+    "types/",
+    "examples/",
+    "README.md"
+  ],
+  "type": "module",
+  "exports": {
+    "./workflow": {
+      "types": "./types/workflow.d.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "test": "vp test run",
+    "check": "vp check",
+    "typecheck": "vp exec tsc --noEmit"
+  },
+  "dependencies": {
+    "acorn": "^8.11.0",
+    "effect": "^4.0.0",
+    "js-beautify": "^2.0.3"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-agent-core": "^0.99.1",
+    "@earendil-works/pi-ai": "^0.99.1",
+    "@earendil-works/pi-coding-agent": "^0.99.1",
+    "@earendil-works/pi-tui": "^0.99.1",
+    "@types/js-beautify": "^1.14.3",
+    "@types/node": "^24.12.4",
+    "typebox": "1.3.7",
+    "typescript": "^5.9.3",
+    "vite-plus": "1.0.0"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-agent-core": ">=0.99.1",
+    "@earendil-works/pi-ai": ">=0.99.1",
+    "@earendil-works/pi-coding-agent": ">=0.99.1",
+    "@earendil-works/pi-tui": ">=0.99.1",
+    "typebox": "*"
+  },
+  "peerDependenciesMeta": {
+    "@earendil-works/pi-agent-core": {
+      "optional": true
+    },
+    "@earendil-works/pi-ai": {
+      "optional": true
+    },
+    "@earendil-works/pi-coding-agent": {
+      "optional": true
+    },
+    "@earendil-works/pi-tui": {
+      "optional": true
+    },
+    "typebox": {
+      "optional": true
+    }
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.0.0"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": "11.19.0",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "npm@11.19.0",
+  "pi": {
+    "extensions": [
+      "./extensions/ultracode.ts"
+    ]
+  }
+}
