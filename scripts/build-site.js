@@ -116,7 +116,7 @@ const HTML = `<!doctype html>
   .content::-webkit-scrollbar { width: 11px; height: 11px; }
   .content::-webkit-scrollbar-thumb { background: #c9ccd2; border-radius: 6px; border: 3px solid var(--paper); }
   .code { display: flex; align-items: flex-start; min-height: 100%; font-family: var(--mono); font-size: 12.5px; line-height: 1.62; }
-  .gutter { position: sticky; left: 0; flex: 0 0 auto; padding: 20px 14px 40px 44px; text-align: right; color: #c2c6cd; background: var(--paper); user-select: none; font-variant-numeric: tabular-nums; border-right: 1px solid var(--line); }
+  .gutter { position: sticky; left: 0; flex: 0 0 auto; padding: 20px 14px 40px 44px; text-align: right; color: #c2c6cd; background: var(--paper); user-select: none; font-variant-numeric: tabular-nums; border-right: 1px solid var(--line); white-space: pre; line-height: inherit; }
   .codebody { flex: 1; padding: 20px 44px 40px; white-space: pre; overflow-x: auto; }
   .fade { animation: fade .22s ease; }
   @keyframes fade { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
