@@ -37,7 +37,15 @@ Secrets never make it into the dump:
 - Known token formats (`sk-…`, `ghp_…`, `AIza…`, JWTs, …) are scrubbed from text.
 - Environment-variable references like `$DEEPSEEK_API_KEY` are preserved as-is.
 
-The manifest records which files were redacted.
+Personal information is removed before a snapshot is published:
+
+- The OS account name, in paths and prose, becomes `<user>`.
+- The home directory (`C:\Users\<user>`, `/home/<user>`, `/c/Users/<user>`) becomes `~`.
+- Email addresses become `<email>`; documentation placeholders such as `user@example.com` are kept.
+- The commit/GitHub handle becomes `<github-handle>`.
+
+The manifest records which files were redacted. To keep this guarantee, submit
+changes by editing the scripts, not the generated `dump/` files.
 
 ## Browse the artifact
 

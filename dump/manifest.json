@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T21:47:15.130Z",
+  "generatedAt": "2026-10-06T21:52:03.903Z",
   "host": {
     "platform": "win32",
     "node": "v24.21.0",
@@ -12,9 +12,9 @@
       "path": "agent/AGENTS.md",
       "category": "Core Config",
       "source": ".pi/agent/AGENTS.md",
-      "size": 6305,
-      "sha256": "847b2643458fe994",
-      "redacted": false,
+      "size": 6301,
+      "sha256": "dbece1cc9498ebb6",
+      "redacted": true,
       "ext": "md",
       "description": "Global agent playbook (working rules, delegation, verification)."
     },
@@ -23,9 +23,9 @@
       "path": "agent/AGENTS.md.bak",
       "category": "Core Config",
       "source": ".pi/agent/AGENTS.md.bak-20261006235926",
-      "size": 4393,
-      "sha256": "6af42dca95c89759",
-      "redacted": false,
+      "size": 4389,
+      "sha256": "7ed65a264edf0fad",
+      "redacted": true,
       "ext": "bak-20261006235926",
       "description": "Previous revision of global playbook."
     },
@@ -56,7 +56,7 @@
       "path": "agent/environment.md",
       "category": "Core Config",
       "source": "generated",
-      "size": 856,
+      "size": 796,
       "sha256": "generated",
       "redacted": true,
       "ext": "md",
@@ -67,9 +67,9 @@
       "path": "agent/extensions/caveman-native.js",
       "category": "Extensions",
       "source": ".pi/agent/extensions/caveman-native.js",
-      "size": 49579,
-      "sha256": "6b75ab0973b97ea2",
-      "redacted": false,
+      "size": 49555,
+      "sha256": "7361b1dcecba61e5",
+      "redacted": true,
       "ext": "js"
     },
     {
@@ -99,9 +99,9 @@
       "path": "agent/memory/failures.md",
       "category": "Memory",
       "source": ".pi/agent/pi-hermes-memory/failures.md",
-      "size": 7927,
-      "sha256": "5b1da0b68569fddd",
-      "redacted": false,
+      "size": 11380,
+      "sha256": "4983ab7217a7e7e6",
+      "redacted": true,
       "ext": "md",
       "description": "Recorded failures, corrections, and tool quirks."
     },
@@ -110,9 +110,9 @@
       "path": "agent/memory/MEMORY.md",
       "category": "Memory",
       "source": ".pi/agent/pi-hermes-memory/MEMORY.md",
-      "size": 2672,
-      "sha256": "a68eafec1337168e",
-      "redacted": false,
+      "size": 4033,
+      "sha256": "09601692a33db495",
+      "redacted": true,
       "ext": "md",
       "description": "Global durable agent memory."
     },
@@ -121,9 +121,9 @@
       "path": "agent/memory/USER.md",
       "category": "Memory",
       "source": ".pi/agent/pi-hermes-memory/USER.md",
-      "size": 1301,
-      "sha256": "a54eef4c21a1d49d",
-      "redacted": false,
+      "size": 1693,
+      "sha256": "3cd142ff30911ace",
+      "redacted": true,
       "ext": "md",
       "description": "Durable user profile memory."
     },
@@ -220,9 +220,9 @@
       "path": "agent/npm/packages/pi-background-tasks/package.json",
       "category": "Packages",
       "source": ".pi/agent/npm/node_modules/pi-background-tasks/package.json",
-      "size": 4314,
-      "sha256": "476ef12e6b6c116d",
-      "redacted": false,
+      "size": 4293,
+      "sha256": "cd0281ed01dc59a3",
+      "redacted": true,
       "ext": "json",
       "description": "Installed extension pi-background-tasks — package.json"
     },
@@ -318,9 +318,9 @@
       "path": "agent/projects-memory/agent-playbook/.MEMORY.md.recovery-1791317840501-861a8c23-d154-4bdd-a9f6-2013ee49d27e",
       "category": "Memory",
       "source": ".pi/agent/projects-memory/agent-playbook/.MEMORY.md.recovery-1791317840501-861a8c23-d154-4bdd-a9f6-2013ee49d27e",
-      "size": 529,
-      "sha256": "b73825da00aea008",
-      "redacted": false,
+      "size": 503,
+      "sha256": "660de0a10c085904",
+      "redacted": true,
       "ext": "recovery-1791317840501-861a8c23-d154-4bdd-a9f6-2013ee49d27e"
     },
     {
@@ -328,9 +328,9 @@
       "path": "agent/projects-memory/agent-playbook/MEMORY.md",
       "category": "Memory",
       "source": ".pi/agent/projects-memory/agent-playbook/MEMORY.md",
-      "size": 5580,
-      "sha256": "115920c74e6b7d15",
-      "redacted": false,
+      "size": 5552,
+      "sha256": "2551e3fcd142a165",
+      "redacted": true,
       "ext": "md",
       "description": "Per-project memory: agent/projects-memory/agent-playbook/MEMORY.md"
     },
@@ -339,9 +339,9 @@
       "path": "agent/projects-memory/memory-of-my-pi/.MEMORY.md.recovery-1791322385522-8466762b-afb1-413e-b9ec-e7027a7c2d10",
       "category": "Memory",
       "source": ".pi/agent/projects-memory/memory-of-my-pi/.MEMORY.md.recovery-1791322385522-8466762b-afb1-413e-b9ec-e7027a7c2d10",
-      "size": 863,
-      "sha256": "405f16bbb1ba8c2b",
-      "redacted": false,
+      "size": 845,
+      "sha256": "88af554e88456391",
+      "redacted": true,
       "ext": "recovery-1791322385522-8466762b-afb1-413e-b9ec-e7027a7c2d10"
     },
     {
@@ -349,9 +349,9 @@
       "path": "agent/projects-memory/memory-of-my-pi/MEMORY.md",
       "category": "Memory",
       "source": ".pi/agent/projects-memory/memory-of-my-pi/MEMORY.md",
-      "size": 4942,
-      "sha256": "3e7348d7db7e8ebd",
-      "redacted": false,
+      "size": 4906,
+      "sha256": "42f6ea62eb94f7d4",
+      "redacted": true,
       "ext": "md",
       "description": "Per-project memory: agent/projects-memory/memory-of-my-pi/MEMORY.md"
     },
@@ -2746,22 +2746,22 @@
     {
       "name": "Core Config",
       "files": 11,
-      "bytes": 36156
+      "bytes": 36088
     },
     {
       "name": "Extensions",
       "files": 1,
-      "bytes": 49579
+      "bytes": 49555
     },
     {
       "name": "Memory",
       "files": 7,
-      "bytes": 23814
+      "bytes": 28912
     },
     {
       "name": "Packages",
       "files": 15,
-      "bytes": 213160
+      "bytes": 213139
     },
     {
       "name": "Skills (external)",
@@ -2781,7 +2781,7 @@
   ],
   "stats": {
     "totalFiles": 263,
-    "totalBytes": 1760797,
-    "redactedFiles": 3
+    "totalBytes": 1765782,
+    "redactedFiles": 14
   }
 }

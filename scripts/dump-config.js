@@ -22,6 +22,32 @@ const HOME = os.homedir();
 
 const REDACTED = '***REDACTED***';
 
+// --- Personal information ---------------------------------------------------
+// A published snapshot must not identify the machine owner. The OS username,
+// home directory, email addresses, and git/GitHub handle are replaced wherever
+// they appear, on top of the secret redaction below.
+const PII_USERNAME = path.basename(HOME);
+const PII_EMAIL_ALLOW = /@example\.com$|^git@github\.com$/i;
+function escapeRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+const PII_PATTERNS = [
+  // Home directory in the spellings different config files use.
+  { re: new RegExp('[A-Za-z]:[\\\\/]+Users[\\\\/]+' + escapeRe(PII_USERNAME), 'gi'), to: '~' },
+  { re: new RegExp('/(?:c|mnt)/Users/' + escapeRe(PII_USERNAME), 'gi'), to: '~' },
+  { re: new RegExp('/Users/' + escapeRe(PII_USERNAME), 'g'), to: '~' },
+  // The bare account name anywhere else (memory notes, prose, paths).
+  { re: new RegExp('\\b' + escapeRe(PII_USERNAME) + '\\b', 'g'), to: '<user>' },
+  // Email addresses, keeping documentation placeholders intact.
+  { re: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, to: (m) => (PII_EMAIL_ALLOW.test(m) ? m : '<email>') },
+  // Public git/GitHub handle used as the commit identity.
+  { re: /\bmuneebhashone\b/gi, to: '<github-handle>' }
+];
+
+function redactPii(text) {
+  let out = text;
+  for (const p of PII_PATTERNS) out = out.replace(p.re, p.to);
+  return out;
+}
+
 // Files/extensions worth capturing as text. Everything else is skipped.
 const TEXT_EXT = new Set([
   '.md', '.markdown', '.json', '.jsonc', '.json5', '.txt', '.yaml', '.yml',
@@ -58,9 +84,9 @@ const manifest = {
   host: {
     platform: process.platform,
     node: process.version,
-    home: HOME.replace(/\\/g, '/')
+    home: '~'
   },
-  source: AGENT.replace(/\\/g, '/'),
+  source: '~/.pi/agent',
   files: [],
   categories: [],
   stats: {}
@@ -71,7 +97,7 @@ function ensureDir(p) { fs.mkdirSync(p, { recursive: true }); }
 function redactText(text) {
   let out = text;
   for (const re of SECRET_TEXT_PATTERNS) out = out.replace(re, REDACTED);
-  return out;
+  return redactPii(out);
 }
 
 function isEnvRef(s) {
@@ -126,13 +152,11 @@ function processContent(absPath) {
         text = JSON.stringify(r.value, null, 2);
       }
     } catch {
-      const t = redactText(text);
-      if (t !== text) { redacted = true; text = t; }
+      // Not valid JSON — fall through to plain-text redaction below.
     }
-  } else {
-    const t = redactText(text);
-    if (t !== text) { redacted = true; text = t; }
   }
+  const t = redactText(text);
+  if (t !== text) { redacted = true; text = t; }
   return { binary: false, size: buf.length, text, redacted };
 }
 
@@ -296,7 +320,8 @@ for (const c of captures) {
   for (const k of interesting) {
     const v = process.env[k] || '';
     const looksSecret = /(key|token|secret|password|auth)/i.test(k) || SECRET_TEXT_PATTERNS.some(re => { re.lastIndex = 0; return re.test(v); });
-    lines.push('| `' + k + '` | ' + (looksSecret ? REDACTED : '`' + v.replace(/\|/g, '\\|') + '`') + ' |');
+    const safe = redactText(v).replace(/\|/g, '\\|');
+    lines.push('| `' + k + '` | ' + (looksSecret ? REDACTED : '`' + safe + '`') + ' |');
   }
   const rel = 'agent/environment.md';
   const text = lines.join('\n') + '\n';

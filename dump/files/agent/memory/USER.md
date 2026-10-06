@@ -15,3 +15,5 @@ Standing expectation: never repeat mistakes; always learn and apply best practic
 Git preference: prefers the origin remote over HTTPS credential helper rather than SSH for repos where ssh-agent has no key (asked to "switch to https" on agent-playbook). <!-- created=2026-10-06, last=2026-10-06 -->
 §
 User prefers the `npx skills add` ecosystem / vercel-labs/skills universal `.agents/skills` layout for agent skill installs, and asks for skills to be added to agent-playbook by referencing GitHub repo URLs. <!-- created=2026-10-06, last=2026-10-06 -->
+§
+Has a public GitHub repo github.com/<github-handle>/memory-of-my-pi (public, MIT, © 2026 <github-handle>) — a snapshot of their Pi agent setup with browsable offline HTML navigator. Standing requirement: no personal information (emails, other people's addresses, etc.) may appear in that repo — push only after scanning for and scrubbing PII. <!-- created=2026-10-06, last=2026-10-06 -->
